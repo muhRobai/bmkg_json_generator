@@ -1,11 +1,9 @@
 package route
 
 import (
+	"github.com/bmkg_json_generator/service"
 	"github.com/gorilla/mux"
 	"net/http"
-	"bmkg/bmkg_api/service"
-	"context"
-	"time"
 	// model "bmkg/bmkg_api/model"
 	"encoding/json"
 )
@@ -20,17 +18,14 @@ func initApi() RouteAPI {
 }
 
 func (c *RouteAPI) recentEarthQuakesHandler(w http.ResponseWriter, r *http.Request) {
-	ctx, cancel := context.WithTimeout(context.Background(), 5 * time.Second)
-	defer cancel()
-
-	resp, err := c.RecentEarthQuakes(ctx)
+	resp, err := c.RecentEarthQuakes()
 	if err != nil {
 		return
 	}
 
 	data, err := json.Marshal(resp)
 	if err != nil {
-		return 
+		return
 	}
 
 	w.Header().Set("Content-Type", "application/json")
